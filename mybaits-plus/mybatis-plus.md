@@ -1661,6 +1661,66 @@ public class Product {
 
 
 
+# 自动填充
+
+> ```
+> 注解填充字段 @TableField(.. fill = FieldFill.INSERT) 生成器策略部分也可以配置！
+> ```
+
+
+
+> ```java
+> public class User {
+> 
+>     // 注意！这里需要标记为填充字段
+>     @TableField(fill = FieldFill.INSERT)
+>     private String fillField;
+> 
+>     ....
+> }
+> ```
+
+
+
+> ```java
+> @Component
+> public class Myhandler implements MetaObjectHandler {
+> 
+>     @Override
+>     public void insertFill(MetaObject metaObject) {
+>         this.setFieldValByName("creatTime",new Date(),metaObject);
+>     }
+> 
+>     @Override
+>     public void updateFill(MetaObject metaObject) {
+>         this.setFieldValByName("updateTime",new Date(),metaObject);
+>     }
+> }
+> ```
+
+
+
+> ```java
+> public enum FieldFill {
+>     /**
+>      * 默认不处理
+>      */
+>     DEFAULT,
+>     /**
+>      * 插入填充字段
+>      */
+>     INSERT,
+>     /**
+>      * 更新填充字段
+>      */
+>     UPDATE,
+>     /**
+>      * 插入和更新填充字段
+>      */
+>     INSERT_UPDATE
+> }
+> ```
+
 # 7、通过枚举
 
 > 表中的有些**字段值是固定的**，例如性别(男或女)，此时我们可以使用MyBatis-Plus的通用枚举 来实现
